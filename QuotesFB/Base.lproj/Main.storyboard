@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Home Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="HomeController" customModule="QuotesFB_temp_caseinsensitive_rename" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mob-hh-X53">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hyV-iZ-Rfq">
+                                        <rect key="frame" x="10" y="28" width="300" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="Mss-ax-XgQ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rpg-ZR-CQS">
+                                        <rect key="frame" x="0.0" y="110" width="320" height="90"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="90" id="wGW-Lu-Hyq"/>
+                                        </constraints>
+                                        <collectionViewLayout key="collectionViewLayout" id="29C-gS-R5o" customClass="FlowLayout" customModule="QuotesFB_temp_caseinsensitive_rename" customModuleProvider="target"/>
+                                        <cells>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TagCell" id="Gou-ih-GvW" customClass="TagCell" customModule="QuotesFB_temp_caseinsensitive_rename" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </view>
+                                            </collectionViewCell>
+                                        </cells>
+                                    </collectionView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="hyV-iZ-Rfq" secondAttribute="bottom" constant="8" id="1J1-kf-nm9"/>
+                                    <constraint firstItem="hyV-iZ-Rfq" firstAttribute="top" secondItem="Mob-hh-X53" secondAttribute="topMargin" constant="20" id="31G-tJ-DPk"/>
+                                    <constraint firstAttribute="trailing" secondItem="rpg-ZR-CQS" secondAttribute="trailing" id="CxB-96-EP6"/>
+                                    <constraint firstItem="hyV-iZ-Rfq" firstAttribute="leading" secondItem="Mob-hh-X53" secondAttribute="leading" constant="10" id="Wp5-yw-hAG"/>
+                                    <constraint firstAttribute="trailing" secondItem="hyV-iZ-Rfq" secondAttribute="trailing" id="Y4Q-XP-P2e"/>
+                                    <constraint firstAttribute="bottom" secondItem="rpg-ZR-CQS" secondAttribute="bottom" id="gUc-l7-NIe"/>
+                                    <constraint firstAttribute="bottom" secondItem="hyV-iZ-Rfq" secondAttribute="bottom" constant="8" id="gkn-y3-Hfw"/>
+                                    <constraint firstItem="hyV-iZ-Rfq" firstAttribute="top" secondItem="Mob-hh-X53" secondAttribute="top" constant="26" id="hHQ-16-k0o"/>
+                                    <constraint firstAttribute="height" constant="200" id="huT-gy-oRD"/>
+                                    <constraint firstItem="rpg-ZR-CQS" firstAttribute="leading" secondItem="Mob-hh-X53" secondAttribute="leading" id="it7-Sf-d2j"/>
+                                    <constraint firstItem="hyV-iZ-Rfq" firstAttribute="leading" secondItem="Mob-hh-X53" secondAttribute="leading" id="kYm-QR-rbF"/>
+                                    <constraint firstAttribute="trailing" secondItem="hyV-iZ-Rfq" secondAttribute="trailing" constant="10" id="pSR-bp-eQM"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="1J1-kf-nm9"/>
+                                        <exclude reference="Y4Q-XP-P2e"/>
+                                        <exclude reference="gkn-y3-Hfw"/>
+                                        <exclude reference="hHQ-16-k0o"/>
+                                        <exclude reference="kYm-QR-rbF"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="114" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vp3-xa-Slm">
+                                <rect key="frame" x="0.0" y="200" width="320" height="368"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="QuoteCell" rowHeight="114" id="hgk-7A-FkF" customClass="QuoteCell" customModule="QuotesFB_temp_caseinsensitive_rename" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="114"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hgk-7A-FkF" id="9EA-Gs-pR8">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="113"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aV6-Iy-OPd">
+                                                    <rect key="frame" x="20" y="20" width="280" height="3"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="aV6-Iy-OPd" secondAttribute="bottom" constant="20" id="O1z-N3-oIF"/>
+                                                <constraint firstAttribute="trailing" secondItem="aV6-Iy-OPd" secondAttribute="trailing" constant="20" id="TZM-mE-X1O"/>
+                                                <constraint firstItem="aV6-Iy-OPd" firstAttribute="leading" secondItem="9EA-Gs-pR8" secondAttribute="leading" constant="20" id="bXv-BX-qeN"/>
+                                                <constraint firstItem="aV6-Iy-OPd" firstAttribute="top" secondItem="9EA-Gs-pR8" secondAttribute="top" constant="20" id="lui-uY-ufj"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="label1" destination="aV6-Iy-OPd" id="J5C-KH-d7f"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="vp3-xa-Slm" firstAttribute="top" secondItem="Mob-hh-X53" secondAttribute="bottom" id="Jis-BR-an0"/>
+                            <constraint firstItem="vp3-xa-Slm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="JwF-xR-a1i"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vp3-xa-Slm" secondAttribute="bottom" id="RfJ-DN-4QV"/>
+                            <constraint firstAttribute="trailing" secondItem="Mob-hh-X53" secondAttribute="trailing" id="XqC-Em-S1S"/>
+                            <constraint firstItem="Mob-hh-X53" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="jj5-33-elN"/>
+                            <constraint firstItem="Mob-hh-X53" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="vYt-fN-IMP"/>
+                            <constraint firstAttribute="trailing" secondItem="vp3-xa-Slm" secondAttribute="trailing" id="vZ8-Pc-Kb2"/>
+                            <constraint firstItem="vp3-xa-Slm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="yWl-nc-fxw"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="yWl-nc-fxw"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="quoteList" destination="vp3-xa-Slm" id="UZp-XW-L2b"/>
+                        <outlet property="searchField" destination="hyV-iZ-Rfq" id="i6f-sl-enR"/>
+                        <outlet property="tagCollection" destination="rpg-ZR-CQS" id="X9g-k0-XvR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="87" y="411"/>
+        </scene>
+    </scenes>
+</document>

@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import Foundation
 
-class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var ref = FIRDatabaseReference.init()
     var items = [FIRDataSnapshot]()
@@ -18,19 +18,29 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var filteredTags = [String]()
 
     @IBOutlet weak var searchField: UITextField!
-    @IBOutlet weak var quoteList: UITableView!
     @IBOutlet weak var tagCollection: UICollectionView!
+    @IBOutlet weak var quoteCollection: UICollectionView!
     
     var sizingCell: TagCell?
-    
+    var screenSize: CGRect!
+    var screenWidth: CGFloat!
+    var inset:CGFloat!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        quoteList.delegate = self
-        quoteList.dataSource = self
+        // FIREBASE
+        ref = FIRDatabase.database().reference()
+
+        screenSize = UIScreen.mainScreen().bounds
+        screenWidth = screenSize.width
+        inset = screenWidth*0.1 / 2
+
         searchField.delegate = self
         tagCollection.dataSource = self
         tagCollection.delegate = self
+        quoteCollection.delegate = self
+        quoteCollection.dataSource = self
         
         // REGISTERING TAGCELL.XIB AS NIB
         let cellNib = UINib(nibName: "TagCell", bundle: nil)
@@ -38,9 +48,17 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.tagCollection.backgroundColor = UIColor.clearColor()
         self.sizingCell = (cellNib.instantiateWithOwner(nil, options: nil) as NSArray).firstObject as! TagCell?
         
-        // FIREBASE
-        ref = FIRDatabase.database().reference()
+        // REGISTERING QUOTETILECELL AS NIB
+        let cellNib2 = UINib(nibName: "QuoteTileCell", bundle: nil)
+        self.quoteCollection.registerNib(cellNib2, forCellWithReuseIdentifier: "QuoteTileCell")
+        self.quoteCollection.backgroundColor = UIColor.clearColor()
         
+        // ADJUSTING QUOTE COLLECTION LAYOUT
+        let layout = quoteCollection.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.itemSize = CGSizeMake(screenSize.width*0.45 - inset/2, screenSize.width*0.45 - inset/2)
+        layout.minimumInteritemSpacing = inset
+        layout.minimumLineSpacing = inset
+        layout.sectionInset = UIEdgeInsetsMake(inset, inset, inset, inset) // overall table inset
 
     }
     
@@ -50,30 +68,58 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tagsFetch()
     }
 
-    // TAG FLOW COLLECTION VIEW
-    func collectionView(tagCollection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return filteredTags.count
+    // COLLECTION COUNT
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if (collectionView == tagCollection) {
+            return filteredTags.count
+        } else  {
+            return items.count
+        }
     }
-    func collectionView(tagCollection: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = tagCollection.dequeueReusableCellWithReuseIdentifier("TagCell", forIndexPath: indexPath) as! TagCell
-        cell.tagName.text = filteredTags[indexPath.row]
+    
+    // COLLECTION CELL
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        if (collectionView == tagCollection) {
+            let cell = tagCollection.dequeueReusableCellWithReuseIdentifier("TagCell", forIndexPath: indexPath) as! TagCell
+            cell.tagName.text = filteredTags[indexPath.row]
+            
+            let bgColorView = UIView()
+            bgColorView.backgroundColor = UIColor.whiteColor()
+            cell.selectedBackgroundView = bgColorView
+            return cell
         
-        let bgColorView = UIView()
-        bgColorView.backgroundColor = UIColor.whiteColor()
-        cell.selectedBackgroundView = bgColorView
-        
-        return cell
+        } else {
+            let cell = quoteCollection.dequeueReusableCellWithReuseIdentifier("QuoteTileCell", forIndexPath: indexPath) as! QuoteTileCell
+            cell.quote.text = items[indexPath.row].value!["quote"] as? String
+            cell.author.text = items[indexPath.row].value!["author"] as? String
+            cell.backgroundColor = UIColor.redColor()
+            return cell
+        }
     }
+    
+    // COLLECTION CELL SIZE
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        self.configureCell(self.sizingCell!, forIndexPath: indexPath)
-        return self.sizingCell!.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        if (collectionView == tagCollection) {
+            self.configureCell(self.sizingCell!, forIndexPath: indexPath)
+            return self.sizingCell!.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        } else {
+            if indexPath.row == 0
+            {
+                return CGSize(width: screenWidth*0.9, height: screenWidth*0.9)
+            }
+            return CGSize(width: screenSize.width*0.45 - inset/2, height: screenSize.width*0.45 - inset/2);
+        }
     }
+    
+    // TAG CELL CONFIG
     func configureCell(cell: TagCell, forIndexPath indexPath: NSIndexPath) {
         let tag = filteredTags[indexPath.row]
         cell.tagName.text = tag
         cell.tagName.textColor = cell.selected ? UIColor.whiteColor() : UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
         cell.backgroundColor = cell.selected ? UIColor(red: 0, green: 1, blue: 0, alpha: 1) : UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1)
     }
+    
+    // TAG CELL SELECT
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 
 //        let selectedCell = tagCollection.cellForItemAtIndexPath(indexPath)!
@@ -87,13 +133,13 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
 //        }
 //
         let tag = filteredTags[indexPath.row]
-//        print(tag)
         filteredTagQuotes(tag)
         
-//        self.tagCollection.reloadData()
     }
 
+    // TAG CELL UNSELECT
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        print("deselect")
         allQuotes()
     }
     
@@ -140,7 +186,10 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
             for item in snapshot.children {
                 self.items.append(item as! FIRDataSnapshot)
             }
-            self.quoteList.reloadData()
+            if self.items.isEmpty {
+            } else {
+            self.quoteCollection.reloadData()
+            }
             
             }, withCancelBlock: { error in
                 print(error.description)
@@ -154,7 +203,7 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
             for item in snapshot.children {
                 self.items.append(item as! FIRDataSnapshot)
             }
-            self.quoteList.reloadData()
+            self.quoteCollection.reloadData()
             }, withCancelBlock: { error in
                 print(error.description)
         })
@@ -172,32 +221,18 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 self.items.append(item as! FIRDataSnapshot)
             }
             
-            dispatch_async(dispatch_get_main_queue(), { self.quoteList.reloadData() })
+            self.quoteCollection.reloadData()
 
             
             }, withCancelBlock: { error in
                 print(error.description)
         })
-    }
-    
-    
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cel:QuoteCell = tableView.dequeueReusableCellWithIdentifier("QuoteCell", forIndexPath: indexPath) as! QuoteCell
-        cel.label1.text = items[indexPath.row].value!["quote"] as? String
-        return cel
-    }
-    
+    }   
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
 
 }
 

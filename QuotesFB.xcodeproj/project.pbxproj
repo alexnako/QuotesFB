@@ -20,7 +20,8 @@
 		22459D7C1CEE6A44003C3C54 /* QuotesFBUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22459D7B1CEE6A44003C3C54 /* QuotesFBUITests.swift */; };
 		22AF6E7C1D0858EA00AD7F87 /* TagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22AF6E7B1D0858EA00AD7F87 /* TagCell.xib */; };
 		22AF6E7E1D085DCA00AD7F87 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AF6E7D1D085DCA00AD7F87 /* FlowLayout.swift */; };
-		22B38A181CF49E440083B4A7 /* QuoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B38A171CF49E440083B4A7 /* QuoteCell.swift */; };
+		22E937D51D0EF22E00D03D96 /* QuoteTileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E937D41D0EF22E00D03D96 /* QuoteTileCell.swift */; };
+		22E937D71D0EF69800D03D96 /* QuoteTileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22E937D61D0EF69800D03D96 /* QuoteTileCell.xib */; };
 		251F4C0F21DF58EF952F5841 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3707B9F933BC08CCD54DCC /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -59,7 +60,8 @@
 		22459D7D1CEE6A44003C3C54 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22AF6E7B1D0858EA00AD7F87 /* TagCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagCell.xib; sourceTree = "<group>"; };
 		22AF6E7D1D085DCA00AD7F87 /* FlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
-		22B38A171CF49E440083B4A7 /* QuoteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuoteCell.swift; sourceTree = "<group>"; };
+		22E937D41D0EF22E00D03D96 /* QuoteTileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuoteTileCell.swift; sourceTree = "<group>"; };
+		22E937D61D0EF69800D03D96 /* QuoteTileCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuoteTileCell.xib; sourceTree = "<group>"; };
 		3E3707B9F933BC08CCD54DCC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE9066977441F0920006C106 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		B878E2E8F9015743130FC3D7 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -122,7 +124,8 @@
 				22433D151D07174900A4D1CE /* TagCell.swift */,
 				22AF6E7B1D0858EA00AD7F87 /* TagCell.xib */,
 				22459D5F1CEE6A44003C3C54 /* Main.storyboard */,
-				22B38A171CF49E440083B4A7 /* QuoteCell.swift */,
+				22E937D61D0EF69800D03D96 /* QuoteTileCell.xib */,
+				22E937D41D0EF22E00D03D96 /* QuoteTileCell.swift */,
 				22459D621CEE6A44003C3C54 /* Assets.xcassets */,
 				22459D641CEE6A44003C3C54 /* LaunchScreen.storyboard */,
 				220EB8C91CEE6C3D00E25913 /* GoogleService-Info.plist */,
@@ -276,6 +279,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22E937D71D0EF69800D03D96 /* QuoteTileCell.xib in Resources */,
 				22459D661CEE6A44003C3C54 /* LaunchScreen.storyboard in Resources */,
 				22AF6E7C1D0858EA00AD7F87 /* TagCell.xib in Resources */,
 				220EB8CA1CEE6C3D00E25913 /* GoogleService-Info.plist in Resources */,
@@ -356,9 +360,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				22433D161D07174900A4D1CE /* TagCell.swift in Sources */,
-				22B38A181CF49E440083B4A7 /* QuoteCell.swift in Sources */,
 				22AF6E7E1D085DCA00AD7F87 /* FlowLayout.swift in Sources */,
 				22459D5E1CEE6A44003C3C54 /* HomeController.swift in Sources */,
+				22E937D51D0EF22E00D03D96 /* QuoteTileCell.swift in Sources */,
 				22459D5C1CEE6A44003C3C54 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

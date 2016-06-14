@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mob-hh-X53">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hyV-iZ-Rfq">
                                         <rect key="frame" x="10" y="28" width="300" height="30"/>
@@ -30,7 +30,7 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rpg-ZR-CQS">
-                                        <rect key="frame" x="0.0" y="110" width="320" height="90"/>
+                                        <rect key="frame" x="0.0" y="60" width="320" height="90"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="90" id="wGW-Lu-Hyq"/>
                                         </constraints>
@@ -58,7 +58,7 @@
                                     <constraint firstAttribute="bottom" secondItem="rpg-ZR-CQS" secondAttribute="bottom" id="gUc-l7-NIe"/>
                                     <constraint firstAttribute="bottom" secondItem="hyV-iZ-Rfq" secondAttribute="bottom" constant="8" id="gkn-y3-Hfw"/>
                                     <constraint firstItem="hyV-iZ-Rfq" firstAttribute="top" secondItem="Mob-hh-X53" secondAttribute="top" constant="26" id="hHQ-16-k0o"/>
-                                    <constraint firstAttribute="height" constant="200" id="huT-gy-oRD"/>
+                                    <constraint firstAttribute="height" constant="150" id="huT-gy-oRD"/>
                                     <constraint firstItem="rpg-ZR-CQS" firstAttribute="leading" secondItem="Mob-hh-X53" secondAttribute="leading" id="it7-Sf-d2j"/>
                                     <constraint firstItem="hyV-iZ-Rfq" firstAttribute="leading" secondItem="Mob-hh-X53" secondAttribute="leading" id="kYm-QR-rbF"/>
                                     <constraint firstAttribute="trailing" secondItem="hyV-iZ-Rfq" secondAttribute="trailing" constant="10" id="pSR-bp-eQM"/>
@@ -73,58 +73,37 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="114" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vp3-xa-Slm">
-                                <rect key="frame" x="0.0" y="200" width="320" height="368"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="QuoteCell" rowHeight="114" id="hgk-7A-FkF" customClass="QuoteCell" customModule="QuotesFB_temp_caseinsensitive_rename" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="320" height="114"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hgk-7A-FkF" id="9EA-Gs-pR8">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="113"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PUe-29-cL1">
+                                <rect key="frame" x="0.0" y="158" width="320" height="410"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Kf6-1Z-8jX">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="QuoteTileCell" id="3pm-IB-YlG" customClass="QuoteTileCell" customModule="QuotesFB_temp_caseinsensitive_rename" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aV6-Iy-OPd">
-                                                    <rect key="frame" x="20" y="20" width="280" height="3"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="aV6-Iy-OPd" secondAttribute="bottom" constant="20" id="O1z-N3-oIF"/>
-                                                <constraint firstAttribute="trailing" secondItem="aV6-Iy-OPd" secondAttribute="trailing" constant="20" id="TZM-mE-X1O"/>
-                                                <constraint firstItem="aV6-Iy-OPd" firstAttribute="leading" secondItem="9EA-Gs-pR8" secondAttribute="leading" constant="20" id="bXv-BX-qeN"/>
-                                                <constraint firstItem="aV6-Iy-OPd" firstAttribute="top" secondItem="9EA-Gs-pR8" secondAttribute="top" constant="20" id="lui-uY-ufj"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="label1" destination="aV6-Iy-OPd" id="J5C-KH-d7f"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="vp3-xa-Slm" firstAttribute="top" secondItem="Mob-hh-X53" secondAttribute="bottom" id="Jis-BR-an0"/>
-                            <constraint firstItem="vp3-xa-Slm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="JwF-xR-a1i"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vp3-xa-Slm" secondAttribute="bottom" id="RfJ-DN-4QV"/>
                             <constraint firstAttribute="trailing" secondItem="Mob-hh-X53" secondAttribute="trailing" id="XqC-Em-S1S"/>
                             <constraint firstItem="Mob-hh-X53" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="jj5-33-elN"/>
                             <constraint firstItem="Mob-hh-X53" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="vYt-fN-IMP"/>
-                            <constraint firstAttribute="trailing" secondItem="vp3-xa-Slm" secondAttribute="trailing" id="vZ8-Pc-Kb2"/>
-                            <constraint firstItem="vp3-xa-Slm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="yWl-nc-fxw"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="yWl-nc-fxw"/>
-                            </mask>
-                        </variation>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
-                        <outlet property="quoteList" destination="vp3-xa-Slm" id="UZp-XW-L2b"/>
+                        <outlet property="quoteCollection" destination="PUe-29-cL1" id="ol3-fq-m7w"/>
                         <outlet property="searchField" destination="hyV-iZ-Rfq" id="i6f-sl-enR"/>
                         <outlet property="tagCollection" destination="rpg-ZR-CQS" id="X9g-k0-XvR"/>
                     </connections>

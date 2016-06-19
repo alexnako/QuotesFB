@@ -11,22 +11,23 @@
             <rect key="frame" x="0.0" y="0.0" width="317" height="37"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LmZ-U2-Meb">
-                    <rect key="frame" x="8" y="8" width="42" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LmZ-U2-Meb">
+                    <rect key="frame" x="12" y="8" width="293" height="21"/>
                     <constraints>
+                        <constraint firstAttribute="height" constant="30" id="Nyi-tQ-QrI"/>
                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="qR0-WL-ctN"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="26"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="LmZ-U2-Meb" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="DYh-pe-Oj4"/>
-                <constraint firstItem="LmZ-U2-Meb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Jpm-f9-pTE"/>
-                <constraint firstAttribute="trailing" secondItem="LmZ-U2-Meb" secondAttribute="trailing" constant="8" id="OlS-O3-Ku1"/>
-                <constraint firstAttribute="bottom" secondItem="LmZ-U2-Meb" secondAttribute="bottom" constant="8" id="p4e-M1-w92"/>
+                <constraint firstItem="LmZ-U2-Meb" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="2" id="DYh-pe-Oj4"/>
+                <constraint firstItem="LmZ-U2-Meb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="14" id="Jpm-f9-pTE"/>
+                <constraint firstAttribute="trailing" secondItem="LmZ-U2-Meb" secondAttribute="trailing" constant="14" id="OlS-O3-Ku1"/>
+                <constraint firstAttribute="bottom" secondItem="LmZ-U2-Meb" secondAttribute="bottom" constant="6" id="p4e-M1-w92"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

@@ -4,22 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-QuotesFB.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-QuotesFBTests 2.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-QuotesFBTests.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>UIColor_Hex_Swift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -27,22 +17,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1469924FC52F60B0068FA24EEFCB3EFC</key>
+		<key>DCB8E9C0E4453463520AEF173111E659</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2E9D6FC3F44F60B633A428421E534A0A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5EBA58DEC300FCCE81C46D3DDAC2F9F5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D713B5228F031F3A6FBD14FC9356BCB6</key>
+		<key>F0CA6DBABBEC8D0FC4A7B1E5959E81D7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

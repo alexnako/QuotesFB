@@ -25,6 +25,7 @@ class FlowLayout: UICollectionViewFlowLayout {
     private var contentWidth: CGFloat  = 0.0
     private var contentHeight: CGFloat  = 90
     private var cache = [UICollectionViewLayoutAttributes]()
+    private var inset: CGFloat = 6
     
     
     override func prepareLayout() {
@@ -43,6 +44,7 @@ class FlowLayout: UICollectionViewFlowLayout {
             var yOffset = [CGFloat]()
             for row in 0 ..< numberOfRows {
                 yOffset.append(CGFloat(row) * rowHeight)
+                xOffset[row] = 6
             }
             
             for item in 0 ..< collectionView!.numberOfItemsInSection(0) {
@@ -55,8 +57,8 @@ class FlowLayout: UICollectionViewFlowLayout {
                 attributes.frame.origin.y = yOffset[row]
                 cache.append(attributes)
                 
-                rowWidth[row] = rowWidth[row] + tag!.frame.size.width + 8
-                xOffset[row] = xOffset[row] + tag!.frame.size.width + 8
+                rowWidth[row] = rowWidth[row] + tag!.frame.size.width + inset
+                xOffset[row] = xOffset[row] + tag!.frame.size.width + inset
                 let otherRow = row >= (numberOfRows - 1) ? 0 : 1
                 if rowWidth[row] > rowWidth[otherRow]{
                     row = row >= (numberOfRows - 1) ? 0 : 1

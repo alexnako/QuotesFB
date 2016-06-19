@@ -16,10 +16,14 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
     var items = [FIRDataSnapshot]()
     var tags = [String]()
     var filteredTags = [String]()
+    var selectedTag: String!
 
     @IBOutlet weak var searchField: UITextField!
     @IBOutlet weak var tagCollection: UICollectionView!
     @IBOutlet weak var quoteCollection: UICollectionView!
+    
+    @IBOutlet weak var tagDrawer: UIView!
+    @IBOutlet weak var tagDrawerHeight: NSLayoutConstraint!
     
     var sizingCell: TagCell?
     var screenSize: CGRect!
@@ -34,7 +38,13 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
 
         screenSize = UIScreen.mainScreen().bounds
         screenWidth = screenSize.width
-        inset = screenWidth*0.1 / 2
+        inset = 2
+        
+        tagDrawer.frame.size.height = 64
+        tagDrawer.clipsToBounds = true
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+
 
         searchField.delegate = self
         tagCollection.dataSource = self
@@ -55,10 +65,10 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
         
         // ADJUSTING QUOTE COLLECTION LAYOUT
         let layout = quoteCollection.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.itemSize = CGSizeMake(screenSize.width*0.45 - inset/2, screenSize.width*0.45 - inset/2)
+        layout.itemSize = CGSizeMake(screenSize.width - inset/2, screenSize.width - inset/2)
         layout.minimumInteritemSpacing = inset
         layout.minimumLineSpacing = inset
-        layout.sectionInset = UIEdgeInsetsMake(inset, inset, inset, inset) // overall table inset
+        layout.sectionInset = UIEdgeInsetsMake(inset, 0, inset, 0) // overall table inset
 
     }
     
@@ -82,10 +92,6 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
         if (collectionView == tagCollection) {
             let cell = tagCollection.dequeueReusableCellWithReuseIdentifier("TagCell", forIndexPath: indexPath) as! TagCell
             cell.tagName.text = filteredTags[indexPath.row]
-            
-            let bgColorView = UIView()
-            bgColorView.backgroundColor = UIColor.whiteColor()
-            cell.selectedBackgroundView = bgColorView
             return cell
         
         } else {
@@ -93,9 +99,22 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
             cell.quote.text = items[indexPath.row].value!["quote"] as? String
             cell.author.text = items[indexPath.row].value!["author"] as? String
             cell.backgroundColor = UIColor.redColor()
+            cell.alpha = 0
+            UIView.animateWithDuration(0.5, animations: {
+                cell.alpha = 1
+            })
             return cell
         }
     }
+    
+//    func scrollViewDidScroll(scrollView: UIScrollView) {
+//        
+//        for cell in tableView.visibleCells() as [UITableViewCell] {
+//            
+//            var point = tableView.convertPoint(cell.center, toView: tableView.superview)
+//            cell.alpha = ((point.y * 100) / tableView.bounds.maxY) / 100
+//        }
+//    }
     
     // COLLECTION CELL SIZE
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -105,9 +124,9 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
         } else {
             if indexPath.row == 0
             {
-                return CGSize(width: screenWidth*0.9, height: screenWidth*0.9)
+                return CGSize(width: screenWidth, height: screenWidth)
             }
-            return CGSize(width: screenSize.width*0.45 - inset/2, height: screenSize.width*0.45 - inset/2);
+            return CGSize(width: screenSize.width*0.5 - inset/2, height: screenSize.width*0.5 - inset/2);
         }
     }
     
@@ -121,20 +140,24 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
     
     // TAG CELL SELECT
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-
-//        let selectedCell = tagCollection.cellForItemAtIndexPath(indexPath)!
-//        selectedCell.backgroundColor = UIColor.purpleColor()
-//        tagCollection.deselectItemAtIndexPath(indexPath, animated: true)
-
+        for item in 0 ..< collectionView.numberOfItemsInSection(0) {
+            let indexPath = NSIndexPath(forItem: item, inSection: 0)
+            let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TagCell
+            cell?.tagSelected = true
+            cell?.toggleSelectedState()
+        }
         
-        
-//        if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TagCell {
-//            cell.toggleSelectedState()
-//        }
-//
-        let tag = filteredTags[indexPath.row]
-        filteredTagQuotes(tag)
-        
+        if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TagCell {
+            if (filteredTags[indexPath.row] != selectedTag || selectedTag == nil) {
+                selectedTag = filteredTags[indexPath.row]
+                filteredTagQuotes()
+            } else {
+                cell.tagSelected = true
+                selectedTag = nil
+                allQuotes()
+            }
+            cell.toggleSelectedState()            
+        }
     }
 
     // TAG CELL UNSELECT
@@ -180,6 +203,23 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
         return true
     }
     
+    // SHOW/HIDE KEYBOARD
+    func keyboardWillShow(notification: NSNotification!) {
+        self.tagDrawerHeight.constant = 200
+        UIView.animateWithDuration(0.5) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    func keyboardWillHide(notification: NSNotification!) {
+        self.tagDrawerHeight.constant = 64
+        UIView.animateWithDuration(0.5) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        view.endEditing(true)
+    }
+    
     // FETCH ALL QUOTES
     func allQuotes () {
         ref.child("quotes").observeSingleEventOfType(.Value, withBlock: { (snapshot: FIRDataSnapshot!) in
@@ -210,11 +250,11 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
     }
 
     // FILTER QUOTES BY TAGS
-    func filteredTagQuotes (tag: String) {
+    func filteredTagQuotes () {
         self.items.removeAll()
         ref.child("quotes").removeAllObservers()
         
-        ref.child("quotes").queryOrderedByChild("tags/\(tag)").queryEqualToValue(true).observeSingleEventOfType(.Value, withBlock: { (snapshot: FIRDataSnapshot!) in
+        ref.child("quotes").queryOrderedByChild("tags/\(selectedTag)").queryEqualToValue(true).observeSingleEventOfType(.Value, withBlock: { (snapshot: FIRDataSnapshot!) in
             self.items.removeAll()
 
             for item in snapshot.children {

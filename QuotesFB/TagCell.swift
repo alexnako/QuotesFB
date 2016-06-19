@@ -17,19 +17,21 @@ class TagCell: UICollectionViewCell {
         
     override func awakeFromNib() {
         tagSelected = false
-        self.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1)
-        self.tagName.textColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
-        self.layer.cornerRadius = 4
+        self.backgroundColor = Styles.Color.Palette.graywash
+        self.tagName.textColor = Styles.Color.Palette.blue
+        self.layer.cornerRadius = self.frame.height/2
         self.tagNameMaxWidthConstraint.constant = UIScreen.mainScreen().bounds.width - 8 * 2 - 8 * 2
     }
     
-//    func toggleSelectedState() {
-//        if tagSelected == false {
-//            tagSelected = true
-//            print("Selected")
-//        } else {
-//            tagSelected = false
-//            print("Deselected")
-//        }
-//    }
+    func toggleSelectedState() {
+        if tagSelected == false {
+            tagSelected = true
+            self.backgroundColor = Styles.Color.Palette.blue
+            self.tagName.textColor = Styles.Color.Palette.white
+        } else {
+            tagSelected = false
+            self.backgroundColor = Styles.Color.Palette.graywash
+            self.tagName.textColor = Styles.Color.Palette.blue
+        }
+    }
 }

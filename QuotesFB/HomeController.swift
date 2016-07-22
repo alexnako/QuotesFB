@@ -14,9 +14,15 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
     
     var ref = FIRDatabaseReference.init()
     var items = [FIRDataSnapshot]()
+    var selectedItem = FIRDataSnapshot()
+
     var tags = [String]()
     var filteredTags = [String]()
+    var quoteStyle = [String]()
+    var selectedStyle = String()
     var selectedTag: String!
+    var selectedCell: CGRect!
+    var selectedIndex: NSIndexPath!
 
     @IBOutlet weak var searchField: UITextField!
     @IBOutlet weak var tagCollection: UICollectionView!
@@ -26,13 +32,19 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
     @IBOutlet weak var tagDrawerHeight: NSLayoutConstraint!
     
     var sizingCell: TagCell?
+    var quoteCell: QuoteTileCell?
     var screenSize: CGRect!
     var screenWidth: CGFloat!
     var inset:CGFloat!
+    
+    
+    var zoomTransition: ZoomTransition!
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        zoomTransition = ZoomTransition()
+
         // FIREBASE
         ref = FIRDatabase.database().reference()
 
@@ -55,8 +67,8 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
         // REGISTERING TAGCELL.XIB AS NIB
         let cellNib = UINib(nibName: "TagCell", bundle: nil)
         self.tagCollection.registerNib(cellNib, forCellWithReuseIdentifier: "TagCell")
-        self.tagCollection.backgroundColor = UIColor.clearColor()
         self.sizingCell = (cellNib.instantiateWithOwner(nil, options: nil) as NSArray).firstObject as! TagCell?
+        self.tagCollection.backgroundColor = UIColor.clearColor()
         
         // REGISTERING QUOTETILECELL AS NIB
         let cellNib2 = UINib(nibName: "QuoteTileCell", bundle: nil)
@@ -93,33 +105,26 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
             let cell = tagCollection.dequeueReusableCellWithReuseIdentifier("TagCell", forIndexPath: indexPath) as! TagCell
             cell.tagName.text = filteredTags[indexPath.row]
             return cell
-        
         } else {
+            
             let cell = quoteCollection.dequeueReusableCellWithReuseIdentifier("QuoteTileCell", forIndexPath: indexPath) as! QuoteTileCell
             cell.quote.text = items[indexPath.row].value!["quote"] as? String
             cell.author.text = items[indexPath.row].value!["author"] as? String
             cell.backgroundColor = UIColor.redColor()
-            cell.alpha = 0
-            UIView.animateWithDuration(0.5, animations: {
-                cell.alpha = 1
-            })
+            cell.clipsToBounds = true
+            cell.layoutSubviews()
+            cell.quote.preferredMaxLayoutWidth = cell.quote.frame.width
+            
+            cell.applyStyle(quoteStyle[indexPath.row])
             return cell
         }
     }
     
-//    func scrollViewDidScroll(scrollView: UIScrollView) {
-//        
-//        for cell in tableView.visibleCells() as [UITableViewCell] {
-//            
-//            var point = tableView.convertPoint(cell.center, toView: tableView.superview)
-//            cell.alpha = ((point.y * 100) / tableView.bounds.maxY) / 100
-//        }
-//    }
-    
+
     // COLLECTION CELL SIZE
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         if (collectionView == tagCollection) {
-            self.configureCell(self.sizingCell!, forIndexPath: indexPath)
+            self.configureTag(self.sizingCell!, forIndexPath: indexPath)
             return self.sizingCell!.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
         } else {
             if indexPath.row == 0
@@ -131,39 +136,72 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
     }
     
     // TAG CELL CONFIG
-    func configureCell(cell: TagCell, forIndexPath indexPath: NSIndexPath) {
+    func configureTag(cell: TagCell, forIndexPath indexPath: NSIndexPath) {
         let tag = filteredTags[indexPath.row]
         cell.tagName.text = tag
-        cell.tagName.textColor = cell.selected ? UIColor.whiteColor() : UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
-        cell.backgroundColor = cell.selected ? UIColor(red: 0, green: 1, blue: 0, alpha: 1) : UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1)
+    }
+
+
+    
+    // CELL PRESS
+    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
+        if (collectionView == quoteCollection) {
+            UIView.animateWithDuration(0.1, delay: 0, options:.CurveEaseInOut, animations: {
+                    self.quoteCollection.cellForItemAtIndexPath(indexPath)!.transform = CGAffineTransformMakeScale(0.97, 0.97)
+                }, completion: { (Bool) in
+            })
+        }
     }
     
-    // TAG CELL SELECT
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        for item in 0 ..< collectionView.numberOfItemsInSection(0) {
-            let indexPath = NSIndexPath(forItem: item, inSection: 0)
-            let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TagCell
-            cell?.tagSelected = true
-            cell?.toggleSelectedState()
+    func collectionView(collectionView: UICollectionView, didUnhighlightItemAtIndexPath indexPath: NSIndexPath) {
+        if (collectionView == quoteCollection) {
+            UIView.animateWithDuration(0.1, delay: 0, options:.CurveEaseInOut, animations: {
+                self.quoteCollection.cellForItemAtIndexPath(indexPath)!.transform = CGAffineTransformMakeScale(1, 1)
+                }, completion: { (Bool) in
+            })
         }
+    }
+    
+    // CELL SELECT
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
-        if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TagCell {
-            if (filteredTags[indexPath.row] != selectedTag || selectedTag == nil) {
-                selectedTag = filteredTags[indexPath.row]
-                filteredTagQuotes()
-            } else {
-                cell.tagSelected = true
-                selectedTag = nil
-                allQuotes()
+        // TAG
+        if (collectionView == tagCollection) {
+            for item in 0 ..< collectionView.numberOfItemsInSection(0) {
+                let indexPath = NSIndexPath(forItem: item, inSection: 0)
+                let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TagCell
+                cell?.tagSelected = true
+                cell?.toggleSelectedState()
             }
-            cell.toggleSelectedState()            
+            if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TagCell {
+                if (filteredTags[indexPath.row] != selectedTag || selectedTag == nil) {
+                    selectedTag = filteredTags[indexPath.row]
+                    filteredTagQuotes()
+                } else {
+                    cell.tagSelected = true
+                    selectedTag = nil
+                    allQuotes()
+                }
+                cell.toggleSelectedState()            
+            }
+            
+        //QUOTE
+        } else {
+            selectedItem = items[indexPath.row]
+            selectedStyle = quoteStyle[indexPath.row]
+            let rect = self.quoteCollection.cellForItemAtIndexPath(indexPath)!.frame
+            selectedCell = self.quoteCollection.convertRect(rect, toView: self.quoteCollection.superview)
+            selectedIndex = indexPath
+            performSegueWithIdentifier("quoteSelect", sender: self)
         }
     }
 
     // TAG CELL UNSELECT
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-        print("deselect")
-        allQuotes()
+        if (collectionView == tagCollection) {
+            print("deselect")
+            allQuotes()
+        }
     }
     
     // FETCH ALL TAGS AND CREATE ARRAY FOR FLOW COLLECTION
@@ -222,9 +260,12 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
     
     // FETCH ALL QUOTES
     func allQuotes () {
+        self.items.removeAll()
+        ref.child("quotes").removeAllObservers()
         ref.child("quotes").observeSingleEventOfType(.Value, withBlock: { (snapshot: FIRDataSnapshot!) in
             for item in snapshot.children {
                 self.items.append(item as! FIRDataSnapshot)
+                self.quoteStyle.append(Styles.Color.variant.randomItem())
             }
             if self.items.isEmpty {
             } else {
@@ -253,7 +294,6 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
     func filteredTagQuotes () {
         self.items.removeAll()
         ref.child("quotes").removeAllObservers()
-        
         ref.child("quotes").queryOrderedByChild("tags/\(selectedTag)").queryEqualToValue(true).observeSingleEventOfType(.Value, withBlock: { (snapshot: FIRDataSnapshot!) in
             self.items.removeAll()
 
@@ -272,6 +312,19 @@ class HomeController: UIViewController, UITextFieldDelegate, UICollectionViewDat
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    // SENDING QUOTE INFO TO QUOTE CONTROLLER
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        let destinationViewControler = segue.destinationViewController as! QuoteController
+        destinationViewControler.passedQuote = selectedItem
+        destinationViewControler.passedStyle = selectedStyle
+        
+        destinationViewControler.modalPresentationStyle = UIModalPresentationStyle.Custom
+        destinationViewControler.transitioningDelegate = zoomTransition
+        
     }
 
 }
